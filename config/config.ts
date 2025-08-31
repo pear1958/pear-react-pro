@@ -1,20 +1,17 @@
-// https://umijs.org/config/
+import { join } from 'node:path'
+import { defineConfig } from '@umijs/max'
+import defaultSettings from './defaultSettings'
+import proxy from './proxy'
+import routes from './routes'
 
-import { join } from 'node:path';
-import { defineConfig } from '@umijs/max';
-import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-
-import routes from './routes';
-
-const { REACT_APP_ENV = 'dev' } = process.env;
+const { REACT_APP_ENV = 'dev' } = process.env
 
 /**
  * @name 使用公共路径
  * @description 部署时的路径，如果部署在非根目录下，需要配置这个变量
  * @doc https://umijs.org/docs/api/config#publicpath
  */
-const PUBLIC_PATH: string = '/';
+const PUBLIC_PATH: string = '/'
 
 export default defineConfig({
   /**
@@ -86,7 +83,7 @@ export default defineConfig({
   title: 'Ant Design Pro',
   layout: {
     locale: true,
-    ...defaultSettings,
+    ...defaultSettings
   },
   /**
    * @name moment2dayjs 插件
@@ -95,7 +92,7 @@ export default defineConfig({
    */
   moment2dayjs: {
     preset: 'antd',
-    plugins: ['duration'],
+    plugins: ['duration']
   },
   /**
    * @name 国际化插件
@@ -106,7 +103,7 @@ export default defineConfig({
     default: 'zh-CN',
     antd: true,
     // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
+    baseNavigator: true
   },
   /**
    * @name antd 插件
@@ -119,10 +116,10 @@ export default defineConfig({
       theme: {
         cssVar: true,
         token: {
-          fontFamily: 'AlibabaSans, sans-serif',
-        },
-      },
-    },
+          fontFamily: 'AlibabaSans, sans-serif'
+        }
+      }
+    }
   },
   /**
    * @name 网络请求配置
@@ -142,7 +139,7 @@ export default defineConfig({
    */
   headScripts: [
     // 解决首次加载时白屏的问题
-    { src: join(PUBLIC_PATH, 'scripts/loading.js'), async: true },
+    { src: join(PUBLIC_PATH, 'scripts/loading.js'), async: true }
   ],
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
@@ -157,18 +154,18 @@ export default defineConfig({
       // 或者使用在线的版本
       // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
       schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
+      mock: false
     },
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath:
-        'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
+      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
+      projectName: 'swagger'
+    }
   ],
   mock: {
-    include: ['mock/**/*', 'src/pages/**/_mock.ts'],
+    include: ['mock/**/*', 'src/pages/**/_mock.ts']
   },
+  // mock: false,
   /**
    * @name 是否开启 mako
    * @description 使用 mako 极速研发
@@ -179,6 +176,10 @@ export default defineConfig({
   requestRecord: {},
   exportStatic: {},
   define: {
-    'process.env.CI': process.env.CI,
+    'process.env.CI': process.env.CI
   },
-});
+  alias: {
+    // 映射 config 文件夹到项目根目录下的 config
+    config: join(__dirname, './')
+  }
+})
